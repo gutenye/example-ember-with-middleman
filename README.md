@@ -3,6 +3,7 @@ example-ember-with-middleman, Write Ember.js App With Middleman
 
 Check out [Live Demo](http://gutenye.github.com/example-ember-with-middleman)
 
+* Use `bower` to manage brower packages.
 * Use `sprockets` to manage javascript assets. 
 * Use `sass` to manage css assets.
 * Use `sprockets-handlebars_template` to compile handlebars.
@@ -26,7 +27,8 @@ Check out [Live Demo](http://gutenye.github.com/example-ember-with-middleman)
 
 **Development**
 
-	$ build install
+	$ bundle install
+	$ bower install
 	$ rake server
 	
 **Build The Site**
@@ -42,6 +44,7 @@ Check out [Live Demo](http://gutenye.github.com/example-ember-with-middleman)
 * [ember.js](http://www.emberjs.com/): A JavaScript framework for creating ambitious web applications 
 * [middleman](http://middlemanapp.com/): Hand-crafted frontend development 
 * [sprockets-handlebars_template](https://github.com/GutenYe/sprockets-handlebars_template): a handlebars template for sprockets 
+* [bower](http://twitter.github.com/bower/): A package manager for the web  
 
 **Copyright**
 
