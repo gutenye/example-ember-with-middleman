@@ -1,7 +1,7 @@
 example-ember-with-middleman, Write Ember.js App With Middleman
 =================================================================
 
-Check out [Live Demo](https://gutenye.github.com/example-ember-with-middleman)
+Check out [Live Demo](http://gutenye.github.com/example-ember-with-middleman)
 
 * Use `sprockets` to manage javascript assets. 
 * Use `sass` to manage css assets.
@@ -9,9 +9,6 @@ Check out [Live Demo](https://gutenye.github.com/example-ember-with-middleman)
 
 **Source Code Layout**
 
-	vendor/
-		javascripts/
-		stylesheets/
 	source/
 		index.html
 		stylesheets/
@@ -19,22 +16,26 @@ Check out [Live Demo](https://gutenye.github.com/example-ember-with-middleman)
 		app/
 			main.js
 			routes.js
-			models/ foo.js
-			views/ foo_view.js
-			templates/ foo.handlebars
+			controllers/  foo_controller.js
+			views/        foo_view.js
+			templates/    foo.handlebars
+			models/       foo.js
+	vendor/
+		javascripts/
+		stylesheets/
 
 **Development**
 
-	build install
-	rake server
+	$ build install
+	$ rake server
 	
 **Build The Site**
 
-	rake build
+	$ rake build
 
 **Deploy To Github Pages**
 
-	rake deploy
+	$ rake deploy
 
 **Resources**
 
