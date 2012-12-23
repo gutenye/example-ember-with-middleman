@@ -59,8 +59,8 @@ set :css_assets_paths, ["#{root}/vendor/stylesheets/"]
 
 # Build-specific configuration
 configure :build do
-  activate :minify_css
-  activate :minify_javascript
+  #activate :minify_css
+  #activate :minify_javascript
 
   # Enable cache buster
   # activate :cache_buster

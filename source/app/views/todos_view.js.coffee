@@ -1,22 +1,6 @@
 App.TodosView = Ember.View.extend
   templateName: "todos"
 
-  oneLeft: (() ->
-    @get("controller.remaining") == 1
-  ).property("controller.remaining")
-
-  isAll: (() ->
-    Ember.empty(@get("controller.filterBy"))
-  ).property("filter")
-
-  isActive: (() ->
-    @get("controller.filterBy") == "active"
-  ).property("filter")
-
-  isCompleted: (() ->
-    @get("controller.filterBy") == "completed"
-  ).property("filter")
-
   CreateTodoView: Ember.TextField.extend
     insertNewline: () ->
       value = @get("value")
@@ -33,24 +17,27 @@ App.TodosView = Ember.View.extend
       e.context.deleteRecord()
       App.store.commit()
 
-  ItemEditorView: Ember.TextField.extend
-    valueBinding: "content.title"
-    classNames: ["edit"]
+    ItemEditorView: Ember.TextField.extend
+      valueBinding: "content.title"
 
-    change: () ->
-      if Ember.empty(@get("content.title"))
-        @get("controller").removeObject(@get("content"))
-      else
-        @get("content").set("title", @get("content.title").trim())
+      change: () ->
+        value = @get("value").trim()
 
-    whenDone: () ->
-      @get("content").set("editing", false)
+        if value == ""
+          @get("content").deleteRecord()
+        else
+          @get("content").set("title", value)
 
-    focusOut: () ->
-      @whenDone()
-    
-    didInsertElement: () ->
-      @$().focus()
-    
-    insertNewline: () ->
-      @whenDone()
+        App.store.commit()
+
+      insertNewline: () ->
+        @whenDone()
+
+      focusOut: () ->
+        @whenDone()
+      
+      didInsertElement: () ->
+        @$().focus()
+      
+      whenDone: () ->
+        @get("content").set("editing", false)

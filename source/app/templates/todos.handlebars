@@ -6,13 +6,13 @@
 <section id="main" {{bindAttr class="controller.noneLeft:hidden"}} >
 	<ul id="todo-list" >
 	{{#each todo in controller}}
-		{{#view view.EntryView tagName="li" class="view" classBinding="todo.completed"}}
+		{{#view view.EntryView contentBinding="todo" tagName="li" class="view" classBinding="todo.completed todo.editing"}}
 			{{#unless todo.editing}}
 				{{view Ember.Checkbox checkedBinding="todo.completed" class="toggle"}}
 				<label>{{todo.title}}</label>
 				<button {{action removeItem todo target="view"}} class="destroy" ></button>
 			{{else}}
-				{{view view.ItemEditorView contentBinding="todo"}}
+				{{view view.ItemEditorView contentBinding="todo" class="edit"}}
 			{{/unless}}
 		{{/view}}
 	{{/each}}
@@ -23,7 +23,7 @@
 
 <footer id="footer" {{bindAttr class="controller.noneLeft:hidden"}}>
 	<span id="todo-count">
-		{{#if oneLeft }}
+		{{#if controller.oneLeft }}
 			<strong>{{controller.remaining}}</strong> item left
 		{{else}}
 			<strong>{{controller.remaining}}</strong> items left
@@ -32,13 +32,13 @@
 	
 	<ul id="filters">
 		<li>
-			<a {{action showAll href=true}} {{bindAttr class="view.isAll:selected"}}>All</a>
+			<a {{action showAll href=true}} {{bindAttr class="controller.isAll:selected"}}>All</a>
 		</li>
 		<li>
-			<a {{action showActive href=true}} {{bindAttr class="view.isActive:selected"}}>Active</a>
+			<a {{action showActive href=true}} {{bindAttr class="controller.isActive:selected"}}>Active</a>
 		</li>
 		<li>
-			<a {{action showCompleted href=true}} {{bindAttr class="view.isCompleted:selected"}}>Completed</a>
+			<a {{action showCompleted href=true}} {{bindAttr class="controller.isCompleted:selected"}}>Completed</a>
 		</li>
 	</ul>
 

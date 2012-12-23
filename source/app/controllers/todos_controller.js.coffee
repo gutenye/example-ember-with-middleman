@@ -7,6 +7,22 @@ App.TodosController = Ember.ArrayController.extend
     )
     App.store.commit()
 
+  oneLeft: (() ->
+    @get("remaining") == 1
+  ).property("remaining")
+
+  isAll: (() ->
+    @get("filterBy") == ""
+  ).property("filterBy")
+
+  isActive: (() ->
+    @get("filterBy") == "active"
+  ).property("filterBy")
+
+  isCompleted: (() ->
+    @get("filterBy") == "completed"
+  ).property("filterBy")
+
   noneLeft: (() ->
     @get("length") == 0
   ).property("length")

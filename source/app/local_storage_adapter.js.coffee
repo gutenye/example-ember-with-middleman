@@ -70,6 +70,4 @@ App.LocalStorageAdapter = DS.Adapter.extend
     for id, record of @_data
       data.push record
 
-    pd 1
     store.loadMany(type, data)
-    pd 2

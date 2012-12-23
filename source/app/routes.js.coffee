@@ -10,12 +10,14 @@ App.Router = Ember.Router.extend
       route: "/"
 
       connectOutlets: (router, context) ->
+        router.set("todosController.filterBy", "")
         router.get("applicationController").connectOutlet("todos", App.Todo.find())
 
     active: Ember.Route.extend
       route: "/active"
 
       connectOutlets: (router, context) ->
+        router.set("todosController.filterBy", "active")
         todos = App.Todo.find().filterProperty("completed", false)
         router.get("applicationController").connectOutlet("todos", todos)
 
@@ -23,5 +25,6 @@ App.Router = Ember.Router.extend
       route: "/completed"
 
       connectOutlets: (router, context) ->
+        router.set("todosController.filterBy", "completed")
         todos = App.Todo.find().filterProperty("completed", true)
         router.get("applicationController").connectOutlet("todos", todos)
