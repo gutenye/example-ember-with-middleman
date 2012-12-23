@@ -1,0 +1,50 @@
+<header id="header">
+	<h1>todos</h1>
+	{{view view.CreateTodoView id="new-todo" placeholder="What needs to be done?"}}
+</header>
+
+<section id="main" {{bindAttr class="controller.noneLeft:hidden"}} >
+	<ul id="todo-list" >
+	{{#each todo in controller}}
+		{{#view view.EntryView tagName="li" class="view" classBinding="todo.completed"}}
+			{{#unless todo.editing}}
+				{{view Ember.Checkbox checkedBinding="todo.completed" class="toggle"}}
+				<label>{{todo.title}}</label>
+				<button {{action removeItem todo target="view"}} class="destroy" ></button>
+			{{else}}
+				{{view view.ItemEditorView contentBinding="todo"}}
+			{{/unless}}
+		{{/view}}
+	{{/each}}
+	</ul>
+
+	{{view Ember.Checkbox id="toggle-all" checkedBinding="controller.allAreDone"}}
+</section>
+
+<footer id="footer" {{bindAttr class="controller.noneLeft:hidden"}}>
+	<span id="todo-count">
+		{{#if oneLeft }}
+			<strong>{{controller.remaining}}</strong> item left
+		{{else}}
+			<strong>{{controller.remaining}}</strong> items left
+		{{/if}}
+	</span>
+	
+	<ul id="filters">
+		<li>
+			<a {{action showAll href=true}} {{bindAttr class="view.isAll:selected"}}>All</a>
+		</li>
+		<li>
+			<a {{action showActive href=true}} {{bindAttr class="view.isActive:selected"}}>Active</a>
+		</li>
+		<li>
+			<a {{action showCompleted href=true}} {{bindAttr class="view.isCompleted:selected"}}>Completed</a>
+		</li>
+	</ul>
+
+	<div id="clear-completed">
+		<button {{action "clearCompleted" target="controller"}} {{bindAttr class="controller.noneCompleted:hidden"}} >
+			Clear completed ({{controller.completed}})
+		</button>
+	</div>
+</footer>
