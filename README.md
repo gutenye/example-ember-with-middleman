@@ -1,7 +1,7 @@
 example-ember-with-middleman, Write Ember.js App With Middleman
 =================================================================
 
-Check out [Live Demo](http://gutenye.github.com/example-ember-with-middleman)
+This is part of [Write Ember.js App With Middleman Tutorial](https://gist.github.com/4364010). Check out [Live Demo](http://gutenye.github.com/example-ember-with-middleman)
 
 * Use `bower` to manage brower packages.
 * Use `sprockets` to manage javascript assets. 
@@ -42,9 +42,10 @@ Check out [Live Demo](http://gutenye.github.com/example-ember-with-middleman)
 **Resources**
 
 * [ember.js](http://www.emberjs.com/): A JavaScript framework for creating ambitious web applications 
+* [bower](http://twitter.github.com/bower/): A package manager for the web  
 * [middleman](http://middlemanapp.com/): Hand-crafted frontend development 
 * [sprockets-handlebars_template](https://github.com/GutenYe/sprockets-handlebars_template): a handlebars template for sprockets 
-* [bower](http://twitter.github.com/bower/): A package manager for the web  
+* [middleman-ember-template](https://github.com/GutenYe/middleman-ember-template): A middleman template for developping ember.js app
 
 **Copyright**
 
