@@ -42817,6 +42817,18 @@ DS.RESTAdapter = DS.Adapter.extend({
       });
       return App.store.commit();
     },
+    oneLeft: (function() {
+      return this.get("remaining") === 1;
+    }).property("remaining"),
+    isAll: (function() {
+      return this.get("filterBy") === "";
+    }).property("filterBy"),
+    isActive: (function() {
+      return this.get("filterBy") === "active";
+    }).property("filterBy"),
+    isCompleted: (function() {
+      return this.get("filterBy") === "completed";
+    }).property("filterBy"),
     noneLeft: (function() {
       return this.get("length") === 0;
     }).property("length"),
@@ -42851,18 +42863,6 @@ DS.RESTAdapter = DS.Adapter.extend({
 
   App.TodosView = Ember.View.extend({
     templateName: "todos",
-    oneLeft: (function() {
-      return this.get("controller.remaining") === 1;
-    }).property("controller.remaining"),
-    isAll: (function() {
-      return Ember.empty(this.get("controller.filterBy"));
-    }).property("filter"),
-    isActive: (function() {
-      return this.get("controller.filterBy") === "active";
-    }).property("filter"),
-    isCompleted: (function() {
-      return this.get("controller.filterBy") === "completed";
-    }).property("filter"),
     CreateTodoView: Ember.TextField.extend({
       insertNewline: function() {
         var value;
@@ -42883,30 +42883,32 @@ DS.RESTAdapter = DS.Adapter.extend({
       removeItem: function(e) {
         e.context.deleteRecord();
         return App.store.commit();
-      }
-    }),
-    ItemEditorView: Ember.TextField.extend({
-      valueBinding: "content.title",
-      classNames: ["edit"],
-      change: function() {
-        if (Ember.empty(this.get("content.title"))) {
-          return this.get("controller").removeObject(this.get("content"));
-        } else {
-          return this.get("content").set("title", this.get("content.title").trim());
+      },
+      ItemEditorView: Ember.TextField.extend({
+        valueBinding: "content.title",
+        change: function() {
+          var value;
+          value = this.get("value").trim();
+          if (value === "") {
+            this.get("content").deleteRecord();
+          } else {
+            this.get("content").set("title", value);
+          }
+          return App.store.commit();
+        },
+        insertNewline: function() {
+          return this.whenDone();
+        },
+        focusOut: function() {
+          return this.whenDone();
+        },
+        didInsertElement: function() {
+          return this.$().focus();
+        },
+        whenDone: function() {
+          return this.get("content").set("editing", false);
         }
-      },
-      whenDone: function() {
-        return this.get("content").set("editing", false);
-      },
-      focusOut: function() {
-        return this.whenDone();
-      },
-      didInsertElement: function() {
-        return this.$().focus();
-      },
-      insertNewline: function() {
-        return this.whenDone();
-      }
+      })
     })
   });
 
@@ -42929,9 +42931,10 @@ function program1(depth0,data) {
   var buffer = '', stack1;
   data.buffer.push("\n		");
   stack1 = {};
+  stack1['contentBinding'] = "todo";
   stack1['tagName'] = "li";
   stack1['class'] = "view";
-  stack1['classBinding'] = "todo.completed";
+  stack1['classBinding'] = "todo.completed todo.editing";
   stack1 = helpers.view.call(depth0, "view.EntryView", {hash:stack1,inverse:self.noop,fn:self.program(2, program2, data),contexts:[depth0],data:data});
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
   data.buffer.push("\n	");
@@ -42967,6 +42970,7 @@ function program5(depth0,data) {
   data.buffer.push("\n				");
   stack1 = {};
   stack1['contentBinding'] = "todo";
+  stack1['class'] = "edit";
   stack1 = helpers.view.call(depth0, "view.ItemEditorView", {hash:stack1,contexts:[depth0],data:data});
   data.buffer.push(escapeExpression(stack1) + "\n			");
   return buffer;}
@@ -43009,7 +43013,7 @@ function program9(depth0,data) {
   stack1['class'] = "controller.noneLeft:hidden";
   stack1 = helpers.bindAttr.call(depth0, {hash:stack1,contexts:[],data:data});
   data.buffer.push(escapeExpression(stack1) + ">\n	<span id=\"todo-count\">\n		");
-  stack1 = helpers['if'].call(depth0, "oneLeft", {hash:{},inverse:self.program(9, program9, data),fn:self.program(7, program7, data),contexts:[depth0],data:data});
+  stack1 = helpers['if'].call(depth0, "controller.oneLeft", {hash:{},inverse:self.program(9, program9, data),fn:self.program(7, program7, data),contexts:[depth0],data:data});
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
   data.buffer.push("\n	</span>\n	\n	<ul id=\"filters\">\n		<li>\n			<a ");
   stack1 = {};
@@ -43017,7 +43021,7 @@ function program9(depth0,data) {
   stack1 = helpers.action.call(depth0, "showAll", {hash:stack1,contexts:[depth0],data:data});
   data.buffer.push(escapeExpression(stack1) + " ");
   stack1 = {};
-  stack1['class'] = "view.isAll:selected";
+  stack1['class'] = "controller.isAll:selected";
   stack1 = helpers.bindAttr.call(depth0, {hash:stack1,contexts:[],data:data});
   data.buffer.push(escapeExpression(stack1) + ">All</a>\n		</li>\n		<li>\n			<a ");
   stack1 = {};
@@ -43025,7 +43029,7 @@ function program9(depth0,data) {
   stack1 = helpers.action.call(depth0, "showActive", {hash:stack1,contexts:[depth0],data:data});
   data.buffer.push(escapeExpression(stack1) + " ");
   stack1 = {};
-  stack1['class'] = "view.isActive:selected";
+  stack1['class'] = "controller.isActive:selected";
   stack1 = helpers.bindAttr.call(depth0, {hash:stack1,contexts:[],data:data});
   data.buffer.push(escapeExpression(stack1) + ">Active</a>\n		</li>\n		<li>\n			<a ");
   stack1 = {};
@@ -43033,7 +43037,7 @@ function program9(depth0,data) {
   stack1 = helpers.action.call(depth0, "showCompleted", {hash:stack1,contexts:[depth0],data:data});
   data.buffer.push(escapeExpression(stack1) + " ");
   stack1 = {};
-  stack1['class'] = "view.isCompleted:selected";
+  stack1['class'] = "controller.isCompleted:selected";
   stack1 = helpers.bindAttr.call(depth0, {hash:stack1,contexts:[],data:data});
   data.buffer.push(escapeExpression(stack1) + ">Completed</a>\n		</li>\n	</ul>\n\n	<div id=\"clear-completed\">\n		<button ");
   stack1 = {};
@@ -43058,6 +43062,7 @@ function program9(depth0,data) {
       index: Ember.Route.extend({
         route: "/",
         connectOutlets: function(router, context) {
+          router.set("todosController.filterBy", "");
           return router.get("applicationController").connectOutlet("todos", App.Todo.find());
         }
       }),
@@ -43065,6 +43070,7 @@ function program9(depth0,data) {
         route: "/active",
         connectOutlets: function(router, context) {
           var todos;
+          router.set("todosController.filterBy", "active");
           todos = App.Todo.find().filterProperty("completed", false);
           return router.get("applicationController").connectOutlet("todos", todos);
         }
@@ -43073,6 +43079,7 @@ function program9(depth0,data) {
         route: "/completed",
         connectOutlets: function(router, context) {
           var todos;
+          router.set("todosController.filterBy", "completed");
           todos = App.Todo.find().filterProperty("completed", true);
           return router.get("applicationController").connectOutlet("todos", todos);
         }
